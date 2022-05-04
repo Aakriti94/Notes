@@ -2,7 +2,7 @@
 # Check whether they are resolved (works) or not (not working)
 # And print in two differnt files of working and not working
 
-# Server Name: kcomit92.cos.is.keysight.com
+# Server Name: Mention the servername where the script is stored
 # User name: aaakriti
 # Date: 27 April, 2022
 
@@ -11,7 +11,7 @@
 #!/usr/bin/env bash
 
 # File path name where all domains are stored
-FilePath="/home/aaakriti/ssh-script/domain-names"
+FilePath="/home/domain-names"
 
 #emptying the working-domains.txt and not-working-domains.txt file for a fresh output everytime
 > not-working-domains.txt
