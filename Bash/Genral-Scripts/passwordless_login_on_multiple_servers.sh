@@ -26,3 +26,10 @@ for x in `cat "$2"`
 do
   echo "$1" | ssh aemuser@$x "cat > /tmp/remotefile.txt"
 done
+
+## Logic
+# Deploying a for loop to traverse over all IPs mentioned in a file
+# Reading all IPs through cat command
+# echo "$1" == giving public key as input to appened to the file
+# ssh aemuser@$x == SSH in the servers one by one (for loop)
+# cat > /tmp/remotefile.txt == creating or appending to a already mentioned file
