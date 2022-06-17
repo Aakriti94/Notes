@@ -55,6 +55,63 @@
 * `RAlt` - Right `Alt`. Corresponds to the `>!` hotkey prefix.
 * `AltGr` - hotkey prefix via `<^>!`
 * `LControl & RAlt::` - `AltGr` itself into a hotkey.
+* `AppsKey` - `menu` This is the key that invokes the right-click context menu.
+* `PrintScreen`
+* `CtrlBreak` - `Ctrl + Pause` or `Ctrl + ScrollLock`
+* `Pause` - `Pause` or `ctrl + NumLock`. While the `Ctrl` key is held down, the `Pause` key produces the key code of `CtrlBreak` and `NumLock` produces `Pause`, so use `^CtrlBreak` in hotkeys instead of `^Pause`.
+* `Help` - Same as `F1`
+* `Sleep`
+* `` -
+
+####  Window specific hotkeys/hotstrings
+
+* `#IfWinActive`
+* `#IfWinExist`
+
+```
+<!-- Specify a window title -->
+
+#IfWinActive Untitled - Notepad
+#Space::
+MsgBox, You pressed WIN+SPACE in Notepad.
+return
+```
+To turn off context sensitivity for subsequent hotkeys or hotstrings, specify any #IfWin directive but leave all of its parameters blank.
+
+```
+; Untitled - Notepad
+#IfWinActive Untitled - Notepad
+!q::
+MsgBox, You pressed ALT+Q in Notepad.
+return
+
+; Any window that isn't Untitled - Notepad
+#IfWinActive
+!q::
+MsgBox, You pressed ALT+Q in any window.
+return
+```
+
+ - When `#IfWin` directives are never used in a script, all hotkeys and hotstrings are enabled for all windows.
+
+ The `#IfWin` directives are positional: they affect all hotkeys and hotstrings physically beneath them in the script. They are also mutually exclusive; that is, only the most recent one will be in effect.
+
+ ```
+<!-- Notepad -->
+#IfWinActive ahk_class Notepad
+#Space::
+MsgBox, You pressed WIN+SPACE in Notepad.
+return
+::msg::You typed msg in Notepad  
+```
+```
+<!-- MSPaint -->
+#IfWinActive Untitled - Paint
+#Space::
+MsgBox, You pressed WIN+SPACE in MSPaint!
+return
+::msg::You typed msg in MSPaint!
+ ```
 
 #### Cursor Control Keys
 
@@ -119,20 +176,21 @@ Each Alt-Tab hotkey must be a combination of two keys, which is achieved via the
 
 #### Mouse Commands
 
-* `LButton` - Left mouse button
-* `RButton` - Right mouse button
-* `MButton` - Middle or wheel mouse button
-* `WheelUp` - You turned the mouse wheel up
-* `WheelDown` - You turned the mouse wheel down
-* `WheelLeft`
-  `WheelRight` -  Scroll to the left or right.
-* `` -
-* `` -
-* `` -
-* `~RButton` -  Right mouse button
-* `~RButton & C` - You pressed C while holding down the right mouse button.
-* `~RButton & LButton` - You pressed the left mouse button while holding down the right
-* `RButton & WheelUp` - You turned the mouse wheel up while holding down the right button.
+|Command|Meaning|
+|--------|-----------|
+| `LButton` |  Left mouse button
+| `RButton` |  Right mouse button
+| `MButton` |  Middle or wheel mouse button
+| `WheelUp` |  You turned the mouse wheel up
+| `WheelDown` |  You turned the mouse wheel down
+| `WheelLeft`| `WheelRight` |   Scroll to the left or right.
+| `` |
+| `` |
+| `` |
+| `~RButton` |   Right mouse button
+| `~RButton & C` |  You pressed C while holding down the right mouse button.
+| `~RButton & LButton` |  You pressed the left mouse button while holding down the right
+| `RButton & WheelUp` |  You turned the mouse wheel up while holding down the right button.
 
 
 #### Combination of Keyboard and Mouse Keys
@@ -152,12 +210,34 @@ Each Alt-Tab hotkey must be a combination of two keys, which is achieved via the
 * `LControl & RAlt` - `AltGr`
 * `` -
 * `` -
-* `` -
-* `` -
-* `` -
-* `` -
-* `` -
 
+
+#### Sending Keystrokes
+|Command|Meaning|
+|--------|-----------|
+| `!` |  `Alt`
+| `Send, This is text!a` |  Would send the keys "This is text" and then press `Alt+A`
+| `!A` |  `Alt` + `Shift` + `A`
+| `!a` |  `Alt` + `A`
+| `+` |  `Shift`
+| `Send, +abC` |  AbC
+| `Send, !+a` |  `Alt` + `Shift` + `A`
+| `^` |  `Ctrl`
+| `Send, ^!a` |  `Ctrl` + `Alt` + `A`
+| `Send, ^!a` |  `Ctrl` + `Home`
+| `^A` |  `Ctrl` + `Shift` + `A`
+| `^a` |  `Ctrl` + `A`
+| `#` |  `Win`
+| `Send #e` |  `Win` + `e`
+
+
+#### Use of `{}` brackets
+  It's how AHK knows that `{!}` means "exclamation point" and not "press the `Alt` key".
+
+  |Command|Meaning|
+  |--------|-----------|
+  |`Send, Multiple Enter lines have Enter been sent.`|Wrong|
+  |`Send, Multiple{Enter}lines have{Enter}been sent.`|Right|
 
 #### Dialog box
 * Dialog box with a Msg: `Msgbox, DemoText!`
@@ -169,20 +249,18 @@ Each Alt-Tab hotkey must be a combination of two keys, which is achieved via the
 ^q::
 Send, This is Aakriti Kashyap
 Return
-```
 
-```
-## Open a folder
+<!-- Open a folder -->
 ^q::
 Run, notepad.exe
 Return
 
-## Run an application
+<!-- Run an application -->
 ^q::
 Run, C:\Users\aaakriti.KEYSIGHT\Google Drive\Notes\Auto Hot Key
 Return
 
-## Open an URL
+<!-- Open an URL -->
 ^q::
 Run, https://www.youtube.com/watch?v=lxLNtBYjkjU  
 Return
@@ -192,13 +270,13 @@ Return
 
 ##### Basic
 ```
-# Syntax
+<!-- Syntax -->
 ::smallstr::expanded string
 
-# Example
+<!-- Example -->
 ::cod::Coding in AHK
 
-# Will not wait for the next key to be pressed to trigger it
+<!-- Will not wait for the next key to be pressed to trigger it -->
 :*:cod::Coding in AHK
 ```
 
@@ -209,7 +287,7 @@ Msgbox, CODING IN AHK
 Msgbox, CODING IN AHK.... Another Box
 Return
 
-## Open a Notepad
+<!-- Open a Notepad -->
 :*:Note::
 Run, Notepad
 Return
@@ -218,10 +296,10 @@ Return
 ### Wildcards
 **Wildcard**: Fire the hotkey even if extra modifiers are being held down.
 ```
-## Win+C, Shift+Win+C, Ctrl+Win+C, etc. will all trigger this hotkey.
+<!-- Win+C, Shift+Win+C, Ctrl+Win+C, etc. will all trigger this hotkey. -->
 *#c::Run Calc.exe
 
-## Pressing ScrollLock will trigger this hotkey even when modifier key(s) are (pressed)down.
+<!-- Pressing ScrollLock will trigger this hotkey even when modifier key(s) are (pressed)down. -->
 *ScrollLock::Run Notepad  
 ```
 

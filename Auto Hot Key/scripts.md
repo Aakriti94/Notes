@@ -7,3 +7,11 @@ MButton::AltTabMenu
 WheelDown::AltTab
 WheelUp::ShiftAltTab
 ```
+
+### Copy the last line
+```
+^b::  ; CTRL+B hotkey
+Send, {Ctrl down}c{Ctrl up}
+SendInput, {Ctrl down}v{Ctrl up}
+return
+```
